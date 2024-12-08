@@ -1,0 +1,16 @@
+lw , 0(/usr/bin/zsh)             // lw 0x1f, 0x00, 0x0000: Addr <- R[0x00] + SEXT(0x0000); R[0x1f] <- M[Addr];
+sub ,,          // InstROM[8'h02]: R[0x1e] = 0x0000001e;
+add ,,          // InstROM[8'h03]: R[0x1d] = 0x80000010;
+sub ,,          // InstROM[8'h04]: R[0x1c] = 0x7ffffff0;
+add ,,          // InstROM[8'h05]: R[0x1b] = 0x0000001b;
+subu ,,          // InstROM[8'h06]: R[0x1a] = 0x80000001;
+slt ,,           // InstROM[8'h07]: R[0x19] = 0x00000000;
+sltu ,,          // InstROM[8'h08]: R[0x18] = 0x00000001;
+addiu ,/usr/bin/zsh, 0xab00     // InstROM[8'h09]: R[0x17] = 0xffffab00;
+addiu ,/usr/bin/zsh, 0x00cd     // InstROM[8'h0a]: R[0x16] = 0x000000cd;
+ori ,, 0xab00      // InstROM[8'h0b]: R[0x15] = 0x0000abcd;
+sw , 31(/usr/bin/zsh)            // InstROM[8'h0c]: M[0x1f] = 0x0000abcd;
+beq ,, 3           // InstROM[8'h0d]: PC relative branch;
+lw , 31(/usr/bin/zsh)            // InstROM[8'h0e]: R[0x14] = 0x0000abcd;
+beq ,, 3           // InstROM[8'h0f]: PC relative branch;
+j 0x000000f               // InstROM[8'h13]: Unconditional jump to the label at the 24-bit PC-relative address.
