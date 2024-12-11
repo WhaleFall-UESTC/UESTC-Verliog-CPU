@@ -24,7 +24,7 @@
 
 `timescale 1ns / 1ps
 
-module mux4to1_testbench;
+module mux4to1_tb;
 
     // Inputs
     reg [1:0] Selector;
@@ -47,6 +47,8 @@ module mux4to1_testbench;
     );
 
     initial begin
+        $dumpfile("mux4to1_tb.vcd");
+        $dumpvars(0, mux4to1_tb);
         // Initialize Inputs
         Selector = 0;
         R0 = 32'hDEADBEEF;
@@ -69,7 +71,7 @@ module mux4to1_testbench;
         Selector = 2'b00;
         #100;
 
-        $stop; // End the simulation
+        $finish; // End the simulation
     end
       
 endmodule

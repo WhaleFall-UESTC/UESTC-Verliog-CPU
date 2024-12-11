@@ -1,3 +1,6 @@
+`include "Adder32.v"
+`include "mux4to1.v"
+
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -56,13 +59,17 @@ module ALU (X, Y, ALUctr, R, Overflow, Zero);
 				
 				assign Overflow = OVctr & OF;		// result of Overflow
 				
+				wire [31:0] Result;
+				
 				mux4to1 mux (
 						.Selector(OPctr),
 						.R0(F),
 						.R1(X | Y),
 						.R2((SIGctr ? (OF & SF) : CF) ? one32 : zero32),
 						.R3(32'h0),
-						.Result(R)				// result of R
+						.Result(Result)				// result of R
 				);
+
+				assign R = Result;
 
 endmodule

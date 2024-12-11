@@ -42,6 +42,8 @@ module ALU_tb;
     );
     
     initial begin
+        $dumpfile("ALU_tb.vcd");
+        $dumpvars(0, ALU_tb);
         // Initial values
         X = 32'h22222222;
         Y = 32'h11111111;
