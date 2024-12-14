@@ -223,6 +223,7 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
                .OF(), .SF(), .ZF(), .CF()
 			);
 			
+			wire M_RegWr, M_MemtoReg;
 			Ex_Mem ex_mem (
 					.Clk(Clk),
 					.E_Jtarg(E_Jtarg), .E_Btarg(E_Btarg), 
@@ -230,13 +231,19 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 					.E_busB(E_busB), .E_Rw(E_Rw),
 					.M_Jtarg(M_Jtarg), .M_Btarg(M_Btarg), 
 					.M_Zero(M_Z), .M_Overflow(M_Overflow),
-					.M_ALUout(M_ALUout), .M_busB(M_busB), .M_Rw(M_Rw)
+					.M_ALUout(M_ALUout), .M_busB(M_busB), .M_Rw(M_Rw),
+
+					.E_Jump(E_Jump), .E_Branch(E_Branch), .E_MemWr(E_MemWr),
+					.M_Jump(M_Jump), .M_Branch(M_Branch), .M_MemWr(M_MemWr),
+
+					.E_RegWr(E_RegWr), .E_MemtoReg(E_MemtoReg),
+					.M_RegWr(M_RegWr), .M_MemtoReg(M_MemtoReg)
 			);
 			
 			
 			
 			/************
-				Ex
+				Mem
 			***********/
 			
 			MUX32_2_1 mux32_5 (
@@ -259,13 +266,16 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 					.M_Dout(M_Dout), .M_ALUout(M_ALUout),
 					.M_Overflow(M_Overflow), .M_Rw(M_Rw),
 					.W_Dout(W_Dout), .W_ALUout(W_ALUout),
-					.W_Overflow(W_overflow), .W_Rw(W_Rw)
+					.W_Overflow(W_overflow), .W_Rw(W_Rw),
+
+					.M_RegWr(M_RegWr), .M_MemtoReg(M_MemtoReg),
+					.W_RegWr(W_RegWr), .W_MemtoReg(W_MemtoReg)
 			);
 			
 			
 			
 			/************
-				Ex
+				Wr
 			***********/
 
 			MUX32_2_1 mux32_6 (
