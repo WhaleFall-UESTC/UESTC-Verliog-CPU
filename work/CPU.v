@@ -1,3 +1,12 @@
+`include "MUX32_2_1.v"
+`include "MUX5_2_1.v"
+`include "ALU.v"
+`include "Ifetch.v" 
+`include "ControlUnit.v" 
+`include "RegFiles.v" 
+`include "Ext.v" 
+`include "DataRAM.v"
+
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -33,15 +42,17 @@ module CPU(Clk, PC, Inst, R);
 			wire [15:0] immd;
 			wire [5:0] func;
 			wire [31:0] extImmd, busA, busB, aluB, busW, Dout, Result;
+			wire [31:0] Inst_wire;
 			
-			assign OP = Inst[31:26];
-			assign Rs = Inst[25:21];
-			assign Rt = Inst[20:16];
-			assign Rd = Inst[15:11];
-			assign immd = Inst[15:0];
-			assign func = Inst[5:0];
+			assign OP = Inst_wire[31:26];
+			assign Rs = Inst_wire[25:21];
+			assign Rt = Inst_wire[20:16];
+			assign Rd = Inst_wire[15:11];
+			assign immd = Inst_wire[15:0];
+			assign func = Inst_wire[5:0];
 			
 			assign R = Result;
+			assign Inst = Inst_wire;
 			
 			assign WE = (~Overflow) & RegWr;
 			
@@ -80,7 +91,7 @@ module CPU(Clk, PC, Inst, R);
 					.Jump(Jump),
 					.Branch(Branch),
 					.Z(Zero),
-					.Inst(Inst),
+					.Inst(Inst_wire),
 					.PC(PC)
 			);
 			

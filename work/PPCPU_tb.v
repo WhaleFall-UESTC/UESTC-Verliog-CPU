@@ -47,15 +47,12 @@ module PPCPU_tb;
 	);
 
 	initial begin
-		// Initialize Inputs
-		Clk = 0;
-
-		// Wait 100 ns for global reset to finish
-		#100;
-        
-		// Add stimulus here
-
-	end
+		$dumpfile("PPCPU_tb.vcd");
+        $dumpvars(0, PPCPU_tb);		
+       Clk = 1;
+	   #3000 $finish;
+	end		
+	always #50 Clk = ~Clk;	
       
 endmodule
 

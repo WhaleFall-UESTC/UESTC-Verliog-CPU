@@ -42,8 +42,11 @@ module CPU_tb;
 	
 	// Insts to be tested are in InstROM 
 
-	initial begin		
+	initial begin
+		$dumpfile("CPU_tb.vcd");
+        $dumpvars(0, CPU_tb);		
        Clk = 1;
+	   #3000 $finish;
 	end		
 	always #50 Clk = ~Clk;	
 	

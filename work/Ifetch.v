@@ -1,3 +1,7 @@
+`include "PC.v"
+`include "SEXT.v"
+`include "InstROM.v"
+
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -20,21 +24,21 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Ifetch(Clk, Jump, Branch, Z, Inst, PC
     );
-	 input Clk;			//Clk-Ê±ÖÓÐÅºÅ£»
-	 input Jump;		//Jump-ÎÞÌõ¼þ×ªÒÆ±êÖ¾£»
-	 input Branch;		//Branch-Ìõ¼þ×ªÒÆ±êÖ¾£»
-	 input Z;		//Z-¼Ó·¨Æ÷Áã±êÖ¾£»
-	 output [31:0] Inst;	//Inst-Ö¸Áî£»
-	 output [31:0] PC;	//Ö¸ÁîµØÖ·£»
+	 input Clk;			//Clk-Ê±ï¿½ï¿½ï¿½ÅºÅ£ï¿½
+	 input Jump;		//Jump-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½Æ±ï¿½Ö¾ï¿½ï¿½
+	 input Branch;		//Branch-ï¿½ï¿½ï¿½ï¿½×ªï¿½Æ±ï¿½Ö¾ï¿½ï¿½
+	 input Z;		//Z-ï¿½Ó·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½
+	 output [31:0] Inst;	//Inst-Ö¸ï¿½î£»
+	 output [31:0] PC;	//Ö¸ï¿½ï¿½ï¿½Ö·ï¿½ï¿½
 	 
-	 wire [31:0] PCin;		//PCin-PCÊý¾ÝÊäÈë£»
-	 wire [31:0] PCout;		//PCout-PCÊý¾ÝÊä³ö£»
-	 wire [31:0] PC4;		//PC4-µ±Ç°PC¼Ó4£»
+	 wire [31:0] PCin;		//PCin-PCï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£»
+	 wire [31:0] PCout;		//PCout-PCï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 wire [31:0] PC4;		//PC4-ï¿½ï¿½Ç°PCï¿½ï¿½4ï¿½ï¿½
 	 wire [15:0] immd = Inst[15:0];
-	 wire [31:0] SEXTout;		//SEXTout-·ûºÅÀ©Õ¹Æ÷Êä³ö£»
-	 wire [31:0] Addr_Beq;		//Addr_Beq-Ìõ¼þÌø×ªµØÖ·£»
-	 wire [31:0] Addr_Jump;		//Addr_Jump-ÎÞÌõ¼þÌø×ªµØÖ·£»
-	 wire [31:0] Addr_NJump;	//Addr_NJump-²»ÊÇÎÞÌõ¼þÌø×ªÖ¸ÁîµÄµØÖ·£»	 
+	 wire [31:0] SEXTout;		//SEXTout-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 wire [31:0] Addr_Beq;		//Addr_Beq-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Ö·ï¿½ï¿½
+	 wire [31:0] Addr_Jump;		//Addr_Jump-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Ö·ï¿½ï¿½
+	 wire [31:0] Addr_NJump;	//Addr_NJump-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªÖ¸ï¿½ï¿½Äµï¿½Ö·ï¿½ï¿½	 
 	 
 	 PC U1 (.Clk(Clk), .PCin(PCin), .PCout(PCout));
 	 Adder32 U2 (.A(PCout), .B(32'h4), .F(PC4), .Cin(1'b0), .Cout(),

@@ -1,3 +1,7 @@
+`include "ControlUnit_main.v"
+`include "ControlUnit_ALU.v"
+`include "MUX3_2_1.v"
+
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -23,21 +27,21 @@ module ControlUnit(OP, func,
 						 MemtoReg, MemWr, Branch, Jump,
 						 ExtOp, ALUctr
     );
-	 input [5:0] OP;		//OP-Ö¸ÁîÀàÐÍ±àÂë£»
-	 input [5:0] func;	//func-R_typeÖ¸Áî¹¦ÄÜ±àÂë£»
-	 output RegWr;			//RegWr-¼Ä´æÆ÷Ð´ÐÅºÅ£»
-	 output ALUSrc;		//ALUSrc-Ñ¡ÔñALUµÚ¶þ¸ö²Ù×÷Êý£»
-	 output RegDst;		//RegDst-Ñ¡ÔñÄ¿µÄ¼Ä´æÆ÷£»
-	 output MemtoReg;		//MemtoReg-Ñ¡ÔñÐ´Èë¼Ä´æÆ÷µÄÊý¾Ý£»
-	 output MemWr;			//MemWr-´æ´¢Æ÷Ð´ÐÅºÅ£»
-	 output Branch;		//Branch-Ìõ¼þ×ªÒÆÖ¸ÁîÅÐ¶ÏÐÅºÅ£»
-	 output Jump;			//Jump-ÎÞÌõ¼þ×ªÒÆÖ¸ÁîÅÐ¶ÏÐÅºÅ£»
-	 output ExtOp;			//ExtOp-Ñ¡Ôñ½øÐÐ·ûºÅÀ©Õ¹»¹ÊÇÁãÀ©Õ¹£»
-	 output [2:0] ALUctr;		//ALUctr-ALU¿ØÖÆÐÅºÅ£»
+	 input [5:0] OP;		//OP-Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Í±ï¿½ï¿½ë£»
+	 input [5:0] func;	//func-R_typeÖ¸ï¿½î¹¦ï¿½Ü±ï¿½ï¿½ë£»
+	 output RegWr;			//RegWr-ï¿½Ä´ï¿½ï¿½ï¿½Ð´ï¿½ÅºÅ£ï¿½
+	 output ALUSrc;		//ALUSrc-Ñ¡ï¿½ï¿½ALUï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 output RegDst;		//RegDst-Ñ¡ï¿½ï¿½Ä¿ï¿½Ä¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½
+	 output MemtoReg;		//MemtoReg-Ñ¡ï¿½ï¿½Ð´ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½
+	 output MemWr;			//MemWr-ï¿½æ´¢ï¿½ï¿½Ð´ï¿½ÅºÅ£ï¿½
+	 output Branch;		//Branch-ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ÅºÅ£ï¿½
+	 output Jump;			//Jump-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ÅºÅ£ï¿½
+	 output ExtOp;			//ExtOp-Ñ¡ï¿½ï¿½ï¿½ï¿½Ð·ï¿½ï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½
+	 output [2:0] ALUctr;		//ALUctr-ALUï¿½ï¿½ï¿½ï¿½ï¿½ÅºÅ£ï¿½
 	 
-	 wire [2:0] ALUop;		//ALUop-·ÇR_typeÖ¸ÁîÊ±¸ù¾ÝÖ¸ÁîÀàÐÍ¸ø³öALU¿ØÖÆÐÅºÅ£»	
-	 wire [2:0] ALUop_R;		//ALUop_R-R_typeÖ¸ÁîÊ±¸ù¾Ýfunc±àÂë¸ø³öALU¿ØÖÆÐÅºÅ£»
-	 wire R_type;		//R_type-ÅÐ¶Ïµ±Ç°Ö¸ÁîÊÇ·ñÎªR_typeÖ¸Áî£»
+	 wire [2:0] ALUop;		//ALUop-ï¿½ï¿½R_typeÖ¸ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½ALUï¿½ï¿½ï¿½ï¿½ï¿½ÅºÅ£ï¿½	
+	 wire [2:0] ALUop_R;		//ALUop_R-R_typeÖ¸ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½funcï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ALUï¿½ï¿½ï¿½ï¿½ï¿½ÅºÅ£ï¿½
+	 wire R_type;		//R_type-ï¿½Ð¶Ïµï¿½Ç°Ö¸ï¿½ï¿½ï¿½Ç·ï¿½ÎªR_typeÖ¸ï¿½î£»
 	 
 	 ControlUnit_main U1 (.OP(OP), .RegWr(RegWr), .ALUSrc(ALUSrc), .RegDst(RegDst), 
                          .MemtoReg(MemtoReg), .MemWr(MemWr), .Branch(Branch), .Jump(Jump),

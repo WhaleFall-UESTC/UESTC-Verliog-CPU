@@ -1,3 +1,17 @@
+
+`include "MUX32_2_1.v"
+`include "PC.v"
+`include "InstROM.v"
+`include "IF_ID.v"
+`include "ControlUnit.v"
+`include "RegFiles.v"
+`include "ID_Ex.v"
+`include "Ext.v"
+`include "ALU.v"
+`include "Ex_Mem.v"
+`include "DataRAM.v"
+`include "Mem_Wr.v"
+
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -81,7 +95,7 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 				.Y(PCin)
 			);
 					
-		  PC pc (
+		  	PC pc (
 				.Clk(Clk),
 				.PCin(PCin),
 				.PCout(I_PC_wire)
@@ -89,14 +103,15 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 			
 			// wire [31:0] PCadd;
 			// assign PCadd = ;
-			Adder32 AdderIF (
-					.A(PCin), .B(32'h4), .F(I_PC4), 
-					.Cin(), .Cout(),
-               .OF(), .SF(), .ZF(), .CF()
-			);
+			// Adder32 AdderIF (
+			// 		.A(I_PC_wire), .B(32'h4), .F(I_PC4), 
+			// 		.Cin(), .Cout(),
+            //    .OF(), .SF(), .ZF(), .CF()
+			// );
+			assign I_PC4 = I_PC_wire + 4;
 			
-			MyInstROM instROM (
-					.Addr(PCin), 
+			InstROM instROM (
+					.Addr(I_PC_wire), 
 					.INST(I_Inst_wire)
 			);
 			
@@ -165,14 +180,14 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 			
 			assign E_Rw = (E_RegDst ? E_Rd : E_Rt);
 			
-			EXT ext1 (
+			Ext ext1 (
 					.imm16(E_immd), 
 					.ExtOp(E_ExtOp), 
 					.Extout(E_immd_ext)
 			);
 			
 			wire [31:0] AluB;
-			MUX31_2_1 mux32_4(
+			MUX32_2_1 mux32_4(
 					.X1(E_immd_ext), 
 					.X0(E_busB),
 					.S(E_ALUSrc),
@@ -229,7 +244,7 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 					.Clk(Clk),
 					.M_Dout(M_Dout), .M_ALUout(M_ALUout),
 					.M_Overflow(M_Overflow), .M_Rw(M_Rw),
-					.W_Dout(W_Dout), .W_ALUout(ALUout),
+					.W_Dout(W_Dout), .W_ALUout(W_ALUout),
 					.W_Overflow(W_overflow), .W_Rw(W_Rw)
 			);
 			
