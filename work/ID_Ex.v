@@ -35,7 +35,30 @@ module ID_Ex(
 	 output reg [5:0] E_func,
 	 output reg [15:0] E_immd,
 	 output reg [4:0] E_Rd,
-	 output reg [4:0] E_Rt
+	 output reg [4:0] E_Rt,
+
+	 input ExtOp,
+	 input RegDst,
+	 input ALUSrc,
+	 input [2:0] ALUctr,
+	 output reg E_ExtOp,
+	 output reg E_RegDst,
+	 output reg E_ALUSrc,
+	 output reg [2:0] E_ALUctr,
+
+	 input Jump,
+	 input Branch,
+	 input MemWr,
+	 output reg E_Jump, 
+	 output reg E_Branch,
+	 output reg E_MemWr,
+
+	 input RegWr,
+	 input MemtoReg,
+	 output reg E_RegWr,
+	 output reg E_MemtoReg
+
+
 	 );
 	 
 	 always @ (negedge Clk)
@@ -48,11 +71,26 @@ module ID_Ex(
 		  E_immd <= immd;
 		  E_Rd <= Rd;
 		  E_Rt <= Rt;
+
+		  	E_ExtOp <= ExtOp;
+    		E_RegDst <= RegDst;
+    		E_ALUSrc <= ALUSrc;
+    		E_ALUctr <= ALUctr;
+
+    		E_Jump <= Jump;
+    		E_Branch <= Branch;
+    		E_MemWr <= MemWr;
+
+    		E_RegWr <= RegWr;
+    		E_MemtoReg <= MemtoReg;
 		end
 	 
 	 initial begin							
 	   E_PC4 = 32'h0; E_Jtarg = 32'h0; E_busA = 32'h0; E_busB = 32'h0;
 		E_func = 5'h0; E_immd = 16'h0; E_Rd = 4'h0; E_Rt = 4'h0;
+	 	E_ExtOp = 1'b0; E_RegDst = 1'b0; E_ALUSrc = 1'b0; E_ALUctr = 3'h0;
+    	E_Jump = 1'b0; E_Branch = 1'b0; E_MemWr = 1'b0;
+    	E_RegWr = 1'b0;	E_MemtoReg = 1'b0;
 	 end
 
 

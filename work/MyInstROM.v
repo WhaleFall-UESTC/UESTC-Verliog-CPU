@@ -1,70 +1,50 @@
-`timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date:    15:30:50 12/08/2024 
-// Design Name: 
-// Module Name:    MyInstROM 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
-// Description: 
-//
-// Dependencies: 
-//
-// Revision: 
-// Revision 0.01 - File Created
-// Additional Comments: 
-//
-//////////////////////////////////////////////////////////////////////////////////
-module MyInstROM(Addr, INST
-    );
-	input [31:0] Addr;		//Addr-
-	output [31:0] INST;		//INST-
-	
-	reg [31:0] InstROM [255:0];		//InstROM-
+module MyInstROM(Addr, INST);
+    input [31:0] Addr;       // Addr - 指令地址
+    output [31:0] INST;      // INST - 指令
 
-   assign INST = InstROM[Addr[9:2]];
-	
-	parameter [5:0] OP_R_type = 6'b000000;
-	parameter [5:0] OP_ori = 6'b001101;
-	parameter [5:0] OP_addiu = 6'b001001;
-	parameter [5:0] OP_lw = 6'b100011;
-	parameter [5:0] OP_sw = 6'b101011;
-	parameter [5:0] OP_beq = 6'b000100;
-	parameter [5:0] OP_jump = 6'b000010;
-	parameter [4:0] shamt = 5'b00000;
-	parameter [5:0] FUNC_add = 6'b100000;
-	parameter [5:0] FUNC_sub = 6'b100010;
-	parameter [5:0] FUNC_subu = 6'b100011;
-	parameter [5:0] FUNC_slt = 6'b101010;
-	parameter [5:0] FUNC_sltu = 6'b101011;
-	
-	integer i;
-	initial 
-	  begin
-	    for(i = 0; i < 256; i = i + 1)
-		  InstROM[i] = 32'h00000000;
-		  
-		  //lw 0x1f, 0x00, 0x0000: Addr <- R[0x00] + SEXT(0x0000); R[0x1f] <- M[Addr];		
-		  InstROM[8'h01] = {OP_lw, 5'b00000, 5'b11111, 16'h0000};		//PC = 0x04; INST = 32'h8c1f0000; R[0x1f] = 0x80000000;
-		  InstROM[8'h02] = {OP_R_type, 5'b00000, 5'b11111, 5'b11110, shamt, FUNC_sub};		//PC = 0x08; INST = 32'h001ff022; R[0x1e] = 0x0000001e;
-		  InstROM[8'h03] = {OP_R_type, 5'b10000, 5'b11111, 5'b11101, shamt, FUNC_add};		//PC = 0x0c; INST = 32'h021fe820; R[0x1d] = 0x80000010;
-		  InstROM[8'h04] = {OP_R_type, 5'b00000, 5'b11101, 5'b11100, shamt, FUNC_sub};		//PC = 0x10; INST = 32'h001de022; R[0x1c] = 0x7ffffff0;
-		  InstROM[8'h05] = {OP_R_type, 5'b10000, 5'b11100, 5'b11011, shamt, FUNC_add};		//PC = 0x14; INST = 32'h021fe820; R[0x1b] = 0x0000001b;
-  		  InstROM[8'h06] = {OP_R_type, 5'b11111, 5'b00001, 5'b11010, shamt, FUNC_subu};		//PC = 0x18; INST = 32'h03e1d023; R[0x1a] = 0x80000001;
-		  InstROM[8'h07] = {OP_R_type, 5'b00001, 5'b11111, 5'b11001, shamt, FUNC_slt};		//PC = 0x1c; INST = 32'h003fc82a; R[0x19] = 0x00000000;
-		  InstROM[8'h08] = {OP_R_type, 5'b00001, 5'b11111, 5'b11000, shamt, FUNC_sltu};		//PC = 0x20; INST = 32'h003fc02b; R[0x18] = 0x00000001;
-		  InstROM[8'h09] = {OP_addiu, 5'b00000, 5'b10111, 16'hab00};		//PC = 0x24; INST = 32'h2417ab00; R[0x17] = 0xffffab00;
-		  InstROM[8'h0a] = {OP_addiu, 5'b00000, 5'b10110, 16'h00cd};		//PC = 0x28; INST = 32'h241600cd; R[0x16] = 0x000000cd;
-		  InstROM[8'h0b] = {OP_ori, 5'b10110, 5'b10101, 16'hab00};		//PC = 0x2c; INST = 32'h36d5ab00; R[0x15] = 0x0000abcd;
-		  InstROM[8'h0c] = {OP_sw, 5'b00000, 5'b10101, 16'h001f};		//PC = 0x30; INST = 32'hac15001f; M[0x1f] = 0x0000abcd;
-		  InstROM[8'h0d] = {OP_beq, 5'b10101, 5'b10100, 16'h0003};		//PC = 0x34; INST = 32'h12b40003;
-		  InstROM[8'h0e] = {OP_lw, 5'b00000, 5'b10100, 16'h001f};		//PC = 0x38; INST = 32'h8c14001f; R[0x14] = 0x0000abcd;
-		  InstROM[8'h0f] = {OP_beq, 5'b10101, 5'b10100, 16'h0003};		//PC = 0x3c; INST = 32'h12b40003;
-		  InstROM[8'h13] = {OP_jump, 26'h000000f};		//PC = 0x4c; INST =32'h0800000f ; NextPC = 0x3c;
-		  
-	  end
-	
+    reg [31:0] InstROM [255:0]; // InstROM - 指令存储器
+
+    assign INST = InstROM[Addr[9:2]];
+
+    // 定义操作码和功能码
+    parameter [5:0] OP_R_type = 6'b000000;
+    parameter [5:0] OP_addiu = 6'b001001;
+    parameter [5:0] OP_lw = 6'b100011;
+    parameter [5:0] OP_sw = 6'b101011;
+    parameter [5:0] OP_beq = 6'b000100;
+    parameter [5:0] OP_jump = 6'b000010;
+    parameter [4:0] shamt = 5'b00000;
+    parameter [5:0] FUNC_add = 6'b100000;
+    parameter [5:0] FUNC_sub = 6'b100010;
+    parameter [5:0] FUNC_and = 6'b100100;
+    parameter [5:0] FUNC_or = 6'b100101;
+    parameter [5:0] FUNC_xor = 6'b100110;
+
+    integer i;
+    initial begin
+        for(i = 0; i < 256; i = i + 1)
+            InstROM[i] = 32'h00000000;
+
+        // 指令序列
+        InstROM[8'h01] = {OP_addiu, 5'b00001, 5'b00001, 16'h0004}; // addiu $1,$1, 4   ; PC = 0x04
+        InstROM[8'h02] = {OP_lw, 5'b00010, 5'b00001, 16'h0000};    // lw $2, 0($1)      ; PC = 0x08
+        InstROM[8'h03] = {OP_addiu, 5'b00011, 5'b00001, 16'h0004}; // addiu $3,$1, 4   ; PC = 0x0C
+        InstROM[8'h04] = {OP_sw, 5'b00010, 5'b00011, 16'h0000};    // sw $2, 0($3)      ; PC = 0x10
+        InstROM[8'h05] = {OP_R_type, 5'b00001, 5'b00010, 5'b00011, shamt, FUNC_add}; // add $1,$2, $3   ; PC = 0x14
+        InstROM[8'h06] = {OP_R_type, 5'b00010, 5'b00001, 5'b00011, shamt, FUNC_sub}; // sub $2,$1, $3   ; PC = 0x18
+        InstROM[8'h07] = {OP_R_type, 5'b00011, 5'b00010, 5'b00001, shamt, FUNC_and}; // and $3,$2, $1   ; PC = 0x1C
+        InstROM[8'h08] = {OP_jump, 26'h0000008};                    // j 0x10           ; PC = 0x20 (跳转到地址 0x10)
+    end
 endmodule
+
+
+/*
+        InstROM[8'h00] = 32'h20040004; // addiu $1,$1, 4   ; PC = 0x00
+        InstROM[8'h01] = 32'h8c100000; // lw $2, 0($1)      ; PC = 0x04
+        InstROM[8'h02] = 32'h20050004; // addiu $3,$1, 4   ; PC = 0x08
+        InstROM[8'h03] = 32'haC230000; // sw $2, 0($3)      ; PC = 0x0C
+        InstROM[8'h04] = 32'h02221820; // add $1,$2, $3    ; PC = 0x10
+        InstROM[8'h05] = 32'h02293822; // sub $2,$1, $3    ; PC = 0x14
+        InstROM[8'h06] = 32'h02695824; // and $3,$2, $1    ; PC = 0x18
+        InstROM[8'h07] = 32'h08000008; // j 0x10            ; PC = 0x1C
+*/

@@ -52,7 +52,7 @@ module PPCPU_tb;
        Clk = 1;
 	   #3000 $finish;
 	end		
-	always #50 Clk = ~Clk;	
+	always #10 Clk = ~Clk;	
       
 endmodule
 

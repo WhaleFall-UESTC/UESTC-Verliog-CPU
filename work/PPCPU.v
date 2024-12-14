@@ -1,7 +1,7 @@
 
 `include "MUX32_2_1.v"
 `include "PC.v"
-`include "InstROM.v"
+`include "MyInstROM.v"
 `include "IF_ID.v"
 `include "ControlUnit.v"
 `include "RegFiles.v"
@@ -59,8 +59,8 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 		  wire [15:0] E_immd;
 		  wire [5:0] E_func;
 		  wire [4:0] E_Rt, E_Rd, E_Rw;
-		  wire [2:0] /*E_ALUop, E_func_CU,*/ ALUctr;
-		  wire E_RegDst, /*E_R_type,*/ E_Z, E_Overflow, E_ALUsrc, E_ExtOp;
+		  //wire [2:0] /*E_ALUop, E_func_CU,*/ ALUctr;
+		  wire E_RegDst, /*E_R_type,*/ E_Z, E_Overflow, E_ALUSrc, E_ExtOp;
 		  wire [31:0] E_ALUout_wire; // for output
 		  
 		  //Mem
@@ -110,7 +110,7 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 			// );
 			assign I_PC4 = I_PC_wire + 4;
 			
-			InstROM instROM (
+			MyInstROM instROM (
 					.Addr(I_PC_wire), 
 					.INST(I_Inst_wire)
 			);
@@ -134,17 +134,20 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 			assign Rd = Inst[15:11];
 			assign immd = Inst[15:0];
 			assign func = Inst[5:0];
+
+			wire ExtOp, ALUSrc, RegDst, Jump, Branch, MemWr, RegWr, MemtoReg; 
+			wire [2:0] ALUctr;
 			
 			ControlUnit CU (
 					.OP(OP), .func(func), 
-					.RegWr(W_RegWr), 
-					.ALUSrc(E_ALUSrc), 
-					.RegDst(E_RegDst),
-					.MemtoReg(W_MemtoReg), 
-					.MemWr(M_MemWr), 
-					.Branch(M_Branch), 
-					.Jump(M_Jump),
-					.ExtOp(E_ExtOp), 
+					.RegWr(RegWr), 
+					.ALUSrc(ALUSrc), 
+					.RegDst(RegDst),
+					.MemtoReg(MemtoReg), 
+					.MemWr(MemWr), 
+					.Branch(Branch), 
+					.Jump(Jump),
+					.ExtOp(ExtOp), 
 					.ALUctr(ALUctr)
 			 );
 			 
@@ -153,12 +156,14 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 					.busW(W_RegDin), 
 					.WE(W_RegWE), 
 					.Rw(W_Rw), 
-					.Ra(Rs), 
-					.Rb(Rt), 
+					.Ra(Rt), 
+					.Rb(Rs), 
 					.busA(busA), 
 					.busB(busB)
 				);
-			
+
+			wire E_Jump, E_Branch, E_MemWr, E_RegWr, E_MemtoReg;
+			wire [2:0] E_ALUctr;
 			assign Jtarg = {PC[31:28], Inst[25:0], 2'b00};
 			ID_Ex id_ex (
 					.Clk(Clk),
@@ -169,7 +174,16 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 					.E_PC4(E_PC4), .E_Jtarg(E_Jtarg) ,
 					.E_busA(E_busA), .E_busB(E_busB),
 					.E_func(E_func), .E_immd(E_immd),
-					.E_Rd(E_Rd), .E_Rt(E_Rt)
+					.E_Rd(E_Rd), .E_Rt(E_Rt),
+
+					.ExtOp(ExtOp), .RegDst(RegDst), .ALUSrc(ALUSrc), .ALUctr(ALUctr),
+					.E_ExtOp(E_ExtOp), .E_RegDst(E_RegDst), .E_ALUSrc(E_ALUSrc), .E_ALUctr(E_ALUctr),
+
+					.Jump(Jump), .Branch(Branch), .MemWr(MemWr), 
+					.E_Jump(E_Jump), .E_Branch(E_Branch), .E_MemWr(E_MemWr),
+
+					.RegWr(RegWr), .MemtoReg(MemtoReg), 
+					.E_RegWr(E_RegWr), .E_MemtoReg(E_MemtoReg)
 			);
 			
 			
@@ -197,7 +211,7 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 			ALU alu_ppcpu (
 					.X(E_busA), 
 					.Y(AluB), 
-					.ALUctr(ALUctr), 
+					.ALUctr(E_ALUctr), 
 					.R(E_ALUout_wire), 
 					.Overflow(E_Overflow), 
 					.Zero(E_Z)
