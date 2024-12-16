@@ -27,13 +27,13 @@ module MyInstROM(Addr, INST);
 
         // 指令序列
         InstROM[8'h01] = {OP_addiu, 5'b00001, 5'b00001, 16'h0004}; // addiu $1,$1, 4   ; PC = 0x04
-        InstROM[8'h02] = {OP_lw, 5'b00010, 5'b00001, 16'h0000};    // lw $2, 0($1)      ; PC = 0x08
-        InstROM[8'h03] = {OP_addiu, 5'b00011, 5'b00001, 16'h0004}; // addiu $3,$1, 4   ; PC = 0x0C
-        InstROM[8'h04] = {OP_sw, 5'b00010, 5'b00011, 16'h0000};    // sw $2, 0($3)      ; PC = 0x10
-        InstROM[8'h05] = {OP_R_type, 5'b00001, 5'b00010, 5'b00011, shamt, FUNC_add}; // add $1,$2, $3   ; PC = 0x14
-        InstROM[8'h06] = {OP_R_type, 5'b00010, 5'b00001, 5'b00011, shamt, FUNC_sub}; // sub $2,$1, $3   ; PC = 0x18
-        InstROM[8'h07] = {OP_R_type, 5'b00011, 5'b00010, 5'b00001, shamt, FUNC_and}; // and $3,$2, $1   ; PC = 0x1C
-        InstROM[8'h08] = {OP_jump, 26'h0000008};                    // j 0x10           ; PC = 0x20 (跳转到地址 0x10)
+        // InstROM[8'h02] = {OP_lw, 5'b00010, 5'b00001, 16'h0000};    // lw $2, 0($1)      ; PC = 0x08
+        InstROM[8'h02] = {OP_addiu, 5'b00011, 5'b00001, 16'h0004}; // addiu $3,$1, 4   ; PC = 0x0C
+        // InstROM[8'h04] = {OP_sw, 5'b00010, 5'b00011, 16'h0000};    // sw $2, 0($3)      ; PC = 0x10
+        InstROM[8'h03] = {OP_R_type, 5'b00001, 5'b00010, 5'b00011, shamt, FUNC_add}; // add $1,$2, $3   ; PC = 0x14
+        InstROM[8'h04] = {OP_R_type, 5'b00010, 5'b00001, 5'b00011, shamt, FUNC_sub}; // sub $2,$1, $3   ; PC = 0x18
+        InstROM[8'h05] = {OP_R_type, 5'b00011, 5'b00001, 5'b00001, shamt, FUNC_and}; // and $3,$1, $1   ; PC = 0x1C
+        InstROM[8'h06] = {OP_jump, 26'h0000008};                    // j 0x10           ; PC = 0x20 (跳转到地址 0x10)
     end
 endmodule
 

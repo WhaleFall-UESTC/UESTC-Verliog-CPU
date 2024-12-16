@@ -156,8 +156,8 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 					.busW(W_RegDin), 
 					.WE(W_RegWE), 
 					.Rw(W_Rw), 
-					.Ra(Rt), 
-					.Rb(Rs), 
+					.Ra(Rs), 
+					.Rb(Rt), 
 					.busA(busA), 
 					.busB(busB)
 				);
@@ -266,7 +266,7 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 					.M_Dout(M_Dout), .M_ALUout(M_ALUout),
 					.M_Overflow(M_Overflow), .M_Rw(M_Rw),
 					.W_Dout(W_Dout), .W_ALUout(W_ALUout),
-					.W_Overflow(W_overflow), .W_Rw(W_Rw),
+					.W_Overflow(W_Overflow), .W_Rw(W_Rw),
 
 					.M_RegWr(M_RegWr), .M_MemtoReg(M_MemtoReg),
 					.W_RegWr(W_RegWr), .W_MemtoReg(W_MemtoReg)
