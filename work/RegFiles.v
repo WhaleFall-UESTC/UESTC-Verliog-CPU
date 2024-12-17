@@ -20,14 +20,14 @@
 //////////////////////////////////////////////////////////////////////////////////
 module RegFiles(CLK, busW, WE, Rw, Ra, Rb, busA, busB
     );
-	 input CLK;			//CLK-Ð´ÈëÊ±ÖÓÐÅºÅ£»
-	 input [31:0] busW;		//busW-Ð´ÈëÊý¾Ý£»
-	 input WE;			//WE-Ð´Ê¹ÄÜÐÅºÅ£»
-	 input [4:0] Rw;			//Rw-Ð´Êý¾ÝµØÖ·£»
-	 input [4:0] Ra, Rb;		//Ra,Rb-¶ÁÊý¾ÝµØÖ·£»
-	 output [31:0] busA, busB;		//busA,busB-¶ÁÊý¾ÝÐÅºÅ£»
+	 input CLK;			//CLK-Ð´ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ÅºÅ£ï¿½
+	 input [31:0] busW;		//busW-Ð´ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½
+	 input WE;			//WE-Ð´Ê¹ï¿½ï¿½ï¿½ÅºÅ£ï¿½
+	 input [4:0] Rw;			//Rw-Ð´ï¿½ï¿½ï¿½Ýµï¿½Ö·ï¿½ï¿½
+	 input [4:0] Ra, Rb;		//Ra,Rb-ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½Ö·ï¿½ï¿½
+	 output [31:0] busA, busB;		//busA,busB-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÅºÅ£ï¿½
 	 
-	 reg [31:0] RegFiles [31:0];		//Í¨ÓÃ¼Ä´æÆ÷×é½¨Ä£
+	 reg [31:0] RegFiles [31:0];		//Í¨ï¿½Ã¼Ä´ï¿½ï¿½ï¿½ï¿½é½¨Ä£
 	 
 	 always @ (negedge CLK)
 	   if(WE) RegFiles[Rw] <= busW;
@@ -40,6 +40,7 @@ module RegFiles(CLK, busW, WE, Rw, Ra, Rb, busA, busB
 	   begin
 		  for(i = 0; i < 32; i = i + 1)
 		    RegFiles[i] = i;
-		end
+		  RegFiles[1] = 2;
+	   end
 
 endmodule
