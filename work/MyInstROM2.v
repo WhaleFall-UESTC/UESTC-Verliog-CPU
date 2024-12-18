@@ -26,8 +26,8 @@ module MyInstROM2(Addr, INST);
             InstROM[i] = 32'h00000000;
 
         // 指令序列
-        InstROM[8'h01] = {OP_addiu, 5'b00001, 5'b00001, 16'h0004}; // addiu $1,$1, 4   ; PC = 0x04
-        // InstROM[8'h02] = {OP_lw, 5'b00010, 5'b00001, 16'h0000};    // lw $2, 0($1)      ; PC = 0x08
+        // InstROM[8'h01] = {OP_addiu, 5'b00001, 5'b00001, 16'h0004}; // addiu $1,$1, 4   ; PC = 0x04
+        InstROM[8'h01] = {OP_lw, 5'b00010, 5'b00001, 16'h0000};    // lw $2, 0($1)      ; PC = 0x08
         // InstROM[8'h02] = {OP_addiu, 5'b00011, 5'b00001, 16'h0004}; // addiu $3,$1, 4   ; PC = 0x0C
         // InstROM[8'h04] = {OP_sw, 5'b00010, 5'b00011, 16'h0000};    // sw $2, 0($3)      ; PC = 0x10
         InstROM[8'h02] = {OP_R_type, 5'b00001, 5'b00010, 5'b00011, shamt, FUNC_add}; // add $1,$2, $3   ; PC = 0x14

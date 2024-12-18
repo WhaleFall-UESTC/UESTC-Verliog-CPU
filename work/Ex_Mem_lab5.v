@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Ex_Mem_lab5(
+module Ex_Mem_lab5 (
 			input Clk,
 			input Clrn,
 			input [31:0] E_Jtarg,
@@ -51,16 +51,16 @@ module Ex_Mem_lab5(
 	 
 	 always @ (negedge Clk)
 	   begin
-		if (!Clrn) begin
-		  M_Jtarg <= E_Jtarg;
-		  M_Btarg <= E_Btarg;
-		  M_Zero <= E_Zero;
-		  M_Overflow <= E_Overflow;
-		  M_ALUout <= E_ALUout;
-		  M_busB <= E_busB;
-		  M_Rw <= E_Rw;
+		if (Clrn) begin
+		  	M_Jtarg <= E_Jtarg;
+		  	M_Btarg <= E_Btarg;
+		  	M_Zero <= E_Zero;
+		  	M_Overflow <= E_Overflow;
+		  	M_ALUout <= E_ALUout;
+		  	M_busB <= E_busB;
+		  	M_Rw <= E_Rw;
 
-		  	M_Jump <= E_Jump;
+			M_Jump <= E_Jump;
     		M_Branch <= E_Branch;
     		M_MemWr <= E_MemWr;
 

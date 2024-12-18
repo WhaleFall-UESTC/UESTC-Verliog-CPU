@@ -29,9 +29,18 @@ module MyInstROM3(Addr, INST);
         // InstROM[8'h02] = {OP_R_type, 5'b00001, 5'b00001, 5'b00001, shamt, FUNC_and};
         // InstROM[8'h03] = {OP_R_type, 5'b00001, 5'b00001, 5'b00001, shamt, FUNC_or};
         // InstROM[8'h04] = {OP_R_type, 5'b00011, 5'b00011, 5'b00011, shamt, FUNC_and};
-        InstROM[8'h01] = {OP_beq, 5'b00001, 5'b00010, 16'h0002};
-        InstROM[8'h02] = {OP_R_type, 5'b00001, 5'b00001, 5'b00001, shamt, FUNC_and};
+
+        // InstROM[8'h01] = {OP_beq, 5'b00001, 5'b00010, 16'h0001};
+        // InstROM[8'h02] = {OP_R_type, 5'b00001, 5'b00001, 5'b00001, shamt, FUNC_add};
+        // InstROM[8'h03] = {OP_R_type, 5'b00001, 5'b00001, 5'b00001, shamt, FUNC_or};
+        // InstROM[8'h04] = {OP_R_type, 5'b00001, 5'b00001, 5'b00001, shamt, FUNC_and};
+        InstROM[8'h01] = {OP_beq, 5'b00001, 5'b00010, 16'h0001};
+        InstROM[8'h02] = {OP_R_type, 5'b00001, 5'b00001, 5'b00001, shamt, FUNC_add};
         InstROM[8'h03] = {OP_R_type, 5'b00001, 5'b00001, 5'b00001, shamt, FUNC_or};
-        InstROM[8'h04] = {OP_R_type, 5'b00011, 5'b00011, 5'b00011, shamt, FUNC_and};
+        InstROM[8'h04] = {OP_R_type, 5'b00001, 5'b00001, 5'b00001, shamt, FUNC_and};
+        // InstROM[8'h05] = {OP_R_type, 5'b00001, 5'b00001, 5'b00001, shamt, FUNC_or};
+        // InstROM[8'h06] = {OP_R_type, 5'b00001, 5'b00001, 5'b00001, shamt, FUNC_and};
+        // InstROM[8'h07] = {OP_R_type, 5'b00001, 5'b00001, 5'b00001, shamt, FUNC_or};
+        // InstROM[8'h08] = {OP_R_type, 5'b00001, 5'b00001, 5'b00001, shamt, FUNC_and};
     end
 endmodule

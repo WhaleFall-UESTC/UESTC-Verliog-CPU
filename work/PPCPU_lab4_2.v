@@ -257,11 +257,12 @@ module PPCPU_lab4_2 (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 					.Zero(E_Z)
 			);
 			
-			Adder32 adderEx (
-					.A(E_PC4), .B(E_immd_ext << 2), .F(E_Btarg), 
-					.Cin(), .Cout(),
-               .OF(), .SF(), .ZF(), .CF()
-			);
+			// Adder32 adderEx (
+			// 		.A(E_PC4), .B(E_immd_ext << 2), .F(E_Btarg), 
+			// 		.Cin(), .Cout(),
+            //    .OF(), .SF(), .ZF(), .CF()
+			// );
+			assign E_Btarg = E_PC4 + (E_immd_ext << 2);
 			
 			// wire M_RegWr, M_MemtoReg;
 			Ex_Mem ex_mem (
