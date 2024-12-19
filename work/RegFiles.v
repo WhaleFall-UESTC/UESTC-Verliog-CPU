@@ -40,7 +40,7 @@ module RegFiles(CLK, busW, WE, Rw, Ra, Rb, busA, busB
 	   begin
 		  for(i = 0; i < 32; i = i + 1)
 		    RegFiles[i] = i;
-		//   RegFiles[1] = 2;
+		  RegFiles[1] = 2;
 	   end
 
 endmodule
