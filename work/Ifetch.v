@@ -1,6 +1,6 @@
 `include "PC.v"
 `include "SEXT.v"
-`include "MyInstROM_CPU.v"
+`include "InstROM.v"
 
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +50,8 @@ module Ifetch(Clk, Jump, Branch, Z, Inst, PC
     				);
 	 MUX32_2_1 U5 (.X1(Addr_Beq), .X0(PC4), .S(Branch & Z), .Y(Addr_NJump));
 	 MUX32_2_1 U6 (.X1(Addr_Jump), .X0(Addr_NJump), .S(Jump), .Y(PCin));
-	 MyInstROM_CPU U7 (.Addr(PCout), .INST(Inst));
+	//  MyInstROM_CPU U7 (.Addr(PCout), .INST(Inst));
+	 InstROM U7 (.Addr(PCout), .INST(Inst));
 	 
 	 assign Addr_Jump = {PCout[31:28], Inst[25:0], 2'b00};
 	 assign PC = PCout;

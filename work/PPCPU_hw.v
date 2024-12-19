@@ -1,7 +1,7 @@
 
 `include "MUX32_2_1.v"
 `include "PC.v"
-`include "MyInstROM.v"
+`include "HwInstROM.v"
 `include "IF_ID.v"
 `include "ControlUnit.v"
 `include "RegFiles.v"
@@ -110,7 +110,7 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 			// );
 			assign I_PC4 = I_PC_wire + 4;
 			
-			MyInstROM instROM (
+			HwInstROM instROM (
 					.Addr(I_PC_wire), 
 					.INST(I_Inst_wire)
 			);
@@ -161,6 +161,7 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 					.busA(busA), 
 					.busB(busB)
 				);
+			
 
 			wire E_Jump, E_Branch, E_MemWr, E_RegWr, E_MemtoReg;
 			wire [2:0] E_ALUctr;
@@ -168,7 +169,7 @@ module PPCPU (Clk, I_PC, I_Inst, Inst, E_ALUout, M_ALUout, W_RegDin);
 			ID_Ex id_ex (
 					.Clk(Clk),
 					.PC4(PC4), .Jtarg(Jtarg), 
-					.busA(busA), .busB(busB), 
+					.busA(Rs == W_Rw ? W_RegDin : busA), .busB(busB), 
 					.func(func), .immd(immd),
 					.Rd(Rd), .Rt(Rt),
 					.E_PC4(E_PC4), .E_Jtarg(E_Jtarg) ,

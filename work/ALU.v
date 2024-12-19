@@ -65,7 +65,7 @@ module ALU (X, Y, ALUctr, R, Overflow, Zero);
 						.Selector(OPctr),
 						.R0(F),
 						.R1(X | Y),
-						.R2((SIGctr ? (OF & SF) : CF) ? one32 : zero32),
+						.R2((SIGctr ? (OF ^ SF) : CF) ? 32'h1 : zero32),
 						.R3(32'h0),
 						.Result(Result)				// result of R
 				);
